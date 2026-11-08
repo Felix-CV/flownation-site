@@ -42,6 +42,7 @@ p{max-width:62ch;margin:0 0 1em}
 .muted{color:var(--mute)}
 .btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
 .btn{display:inline-block;padding:14px 26px;border-radius:99px;font-weight:700;text-decoration:none;border:2px solid var(--gold);color:var(--gold)}
+button.btn{font:inherit;font-weight:700;background:none;cursor:pointer}
 .btn.fill{background:var(--gold);color:#000}
 .btn:hover{background:var(--ink);border-color:var(--ink);color:#000}
 .hero{padding:64px 0 24px}
@@ -87,7 +88,8 @@ p{max-width:62ch;margin:0 0 1em}
 .sub{display:flex;gap:6px;flex-wrap:wrap;margin:28px 0 0;padding:6px;background:var(--panel);border:1px solid var(--line);border-radius:99px;width:fit-content;max-width:100%}
 .sub a{padding:8px 16px;border-radius:99px;text-decoration:none;color:var(--mute);font-weight:500}
 .sub a[aria-current=page]{background:var(--gold);color:#000;font-weight:700}
-@media(max-width:700px){.sub{display:flex;flex-wrap:nowrap;overflow-x:auto;width:100%;border-radius:99px;scrollbar-width:none;-webkit-overflow-scrolling:touch}.sub::-webkit-scrollbar{display:none}.sub a{flex:none;white-space:nowrap}}
+@media(max-width:700px){.view .sub{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;width:100%;border-radius:18px;overflow:visible}.view .sub a{padding:10px 4px;text-align:center;font-size:14px;white-space:nowrap;min-width:0}}
+@media(max-width:360px){.view .sub{grid-template-columns:repeat(2,1fr)}}
 .versus{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:center;margin:40px 0 8px}
 .versus .mc{font:900 clamp(34px,8vw,92px)/.9 var(--display);text-transform:uppercase}
 .versus .mc:last-child{text-align:right}
@@ -149,7 +151,8 @@ footer a{margin:0 10px;display:inline-block}footer p{max-width:none;margin:14px 
 <div class="grid" data-fill="3"></div></section>
 
 <section class="view" id="about"><div class="hero"><h1>Sobre</h1><p class="lead" style="margin-top:24px">A Flownation nasceu em Luanda para dar palco a quem está a começar no hip hop. Acreditamos que há talento enorme que ainda não foi ouvido e que só precisa de uma câmara, um bom som e um cenário à altura. Por isso filmamos sessões com um artista e uma música, juntamos rappers em cyphers e organizamos uma liga de batalhas onde cada rima conta. Tudo é publicado no nosso canal do YouTube, para que cada artista chegue a mais gente e cada ouvinte descubra uma voz nova. Se és rapper, produtor ou simplesmente amas a cultura, esta casa também é tua. Entra em contacto connosco e vem fazer parte.</p>
-<div class="btns"><a class="btn fill" href="https://www.youtube.com/@seeflownation" target="_blank" rel="noopener">Segue no YouTube</a><a class="btn" href="https://www.instagram.com/flownationao/" target="_blank" rel="noopener">Instagram</a><a class="btn" href="mailto:flownationao@gmail.com">Email</a></div></div></section>
+<div class="btns"><a class="btn fill" href="https://www.youtube.com/@seeflownation" target="_blank" rel="noopener">Segue no YouTube</a><a class="btn" href="https://www.instagram.com/flownationao/" target="_blank" rel="noopener">Instagram</a><a class="btn" href="https://mail.google.com/mail/?view=cm&fs=1&to=flownationao@gmail.com" target="_blank" rel="noopener">Abrir no Gmail</a><button type="button" class="btn" id="copymail">Copiar email</button></div>
+<p class="muted" style="margin-top:20px">Email: <a href="mailto:flownationao@gmail.com">flownationao@gmail.com</a></p></div></section>
 
 <div class="view" id="battles-area">
 <div class="hero" style="padding-bottom:0"><h1>Flownation<br>Batalhas</h1>
@@ -187,7 +190,7 @@ footer a{margin:0 10px;display:inline-block}footer p{max-width:none;margin:14px 
 </section>
 </div>
 </main>
-<footer><a href="https://www.youtube.com/@seeflownation" target="_blank" rel="noopener">YouTube</a><a href="https://www.instagram.com/flownationao/" target="_blank" rel="noopener">Instagram</a><a href="https://www.facebook.com/profile.php?id=61596068917219" target="_blank" rel="noopener">Facebook</a><a href="mailto:flownationao@gmail.com">Email</a><p>© 2026 Flownation</p></footer>
+<footer><a href="https://www.youtube.com/@seeflownation" target="_blank" rel="noopener">YouTube</a><a href="https://www.instagram.com/flownationao/" target="_blank" rel="noopener">Instagram</a><a href="https://www.facebook.com/profile.php?id=61596068917219" target="_blank" rel="noopener">Facebook</a><a href="mailto:flownationao@gmail.com">flownationao@gmail.com</a><p>© 2026 Flownation</p></footer>
 
 <script>
 /* Battle data: edit this block to update the site. */
@@ -272,6 +275,12 @@ function route(){
   document.querySelectorAll(".sub a").forEach(function(a){a.getAttribute("href")==="#"+h?a.setAttribute("aria-current","page"):a.removeAttribute("aria-current")});
   window.scrollTo(0,0);
 }
+$("#copymail").addEventListener("click",function(){
+  var b=this,t="flownationao@gmail.com";
+  function ok(){b.textContent="Copiado!";setTimeout(function(){b.textContent="Copiar email"},2000)}
+  function fb(){var a=document.createElement("textarea");a.value=t;a.style.position="fixed";a.style.opacity="0";document.body.appendChild(a);a.select();try{document.execCommand("copy");ok()}catch(e){b.textContent=t}document.body.removeChild(a)}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fb)}else{fb()}
+});
 var mb=$(".menu"),mn=$("#mainnav");
 function closeMenu(){mn.classList.remove("open");mb.setAttribute("aria-expanded","false");mb.setAttribute("aria-label","Abrir menu")}
 mb.addEventListener("click",function(){var o=mn.classList.toggle("open");mb.setAttribute("aria-expanded",o);mb.setAttribute("aria-label",o?"Fechar menu":"Abrir menu")});
